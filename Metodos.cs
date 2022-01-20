@@ -8,8 +8,9 @@ namespace Recursiva.Superliga.App
     internal class Metodos
     {
         const string RUTA = @"C:\Users\Oscar\source\repos\Recursiva.Superliga\socios.csv";
+        private List<Socio> lista = Leercsv();
 
-        public List<Socio> Leercsv()
+        public static List<Socio> Leercsv()
         {
             List<Socio> lista = new List<Socio>();
             var reader = new StreamReader(File.OpenRead(RUTA));
@@ -30,14 +31,12 @@ namespace Recursiva.Superliga.App
 
         public int Punto1()
         {
-            List<Socio> lista = Leercsv();
             return lista.Count();
         }
 
 
         public float Punto2(string club)
         {
-            List<Socio> lista = Leercsv();
             var sRacing = lista.Where(x => x.Equipo.Equals(club));
             var promedio = sRacing.Average(x => x.Edad);
             return (float)promedio;
@@ -47,7 +46,6 @@ namespace Recursiva.Superliga.App
         }
         public IEnumerable<Socio> Punto3(string ec, string ne)
         {
-            List<Socio> lista = Leercsv();
             var result = lista.Where(x => x.EstadoCivil.Equals(ec)
                     && x.NivelEstudios.Equals(ne)).Take(100);
             return result;
@@ -57,7 +55,6 @@ namespace Recursiva.Superliga.App
 
         public IEnumerable<KeyValuePair<string, int>> Punto4(string club)
         {
-            List<Socio> lista = Leercsv();
             var sRiver = lista.Where(x => x.Equipo.Equals(club)).GroupBy(x => x.Nombre);
             Dictionary<string, int> nombres = new();
             foreach (var item in sRiver)
@@ -71,7 +68,6 @@ namespace Recursiva.Superliga.App
 
         public IOrderedEnumerable<Estadistica> Punto5(){
 
-            List<Socio> lista = Leercsv();
             var lista2 = lista.GroupBy(x => x.Equipo);
             List<Estadistica>cSocios = new();
             foreach (var item in lista2)

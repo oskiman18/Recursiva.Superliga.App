@@ -17,17 +17,29 @@ namespace Recursiva.Superliga.App
             Console.WriteLine("El promedio de edad de hinchas de Racing es de: " + metodos.Punto2("Racing"));
             Console.WriteLine("------------------------------------------------------------------");
             Console.WriteLine("Listado de personas casadas y con estudios Universitarios: ");
+            Console.WriteLine("*************************");
+
             foreach (var item in casados)
             {
-                Console.WriteLine(item.Nombre + " " + item.Edad + " " + item.Equipo);
-
+                Console.WriteLine("Nombre: "+ item.Nombre);
+                Console.WriteLine("Edad: " + item.Edad) ;
+                Console.WriteLine("Equipo: " + item.Equipo);
+                Console.WriteLine("*************************");
             }
+
             Console.WriteLine("------------------------------------------------------------------");
+            Console.WriteLine("*************************");
+
             foreach (var item in river)
             {
-                Console.WriteLine("Nombre: " + item.Key + " Cantidad de veces: " + item.Value);
+                Console.WriteLine("Nombre: " + item.Key);
+                Console.WriteLine("Cantidad de veces: " + item.Value);
+                Console.WriteLine("*************************");
             }
+
             Console.WriteLine("------------------------------------------------------------------");
+            Console.WriteLine("*************************");
+
             foreach (var item in estadistica)
             {
 
@@ -36,14 +48,9 @@ namespace Recursiva.Superliga.App
                 Console.WriteLine("Su promedio de edad es de: " + item.avgEdad);
                 Console.WriteLine("Su socio menor tiene: " + item.minEdad);
                 Console.WriteLine("Su socio mayor tiene: " + item.maxEdad);
-                Console.WriteLine("------------------------------------------------------------------");
+                Console.WriteLine("*************************");
 
             }
-
-
-
         }
     }
-
-
 }
