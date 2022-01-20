@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Recursiva.Superliga.App.Clases;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -6,17 +7,21 @@ namespace Recursiva.Superliga.App
 {
     internal class Metodos
     {
-   
+        const string RUTA = @"C:\Users\Oscar\source\repos\Recursiva.Superliga\socios.csv";
 
         public List<Socio> Leercsv()
         {
             List<Socio> lista = new List<Socio>();
-            var reader = new StreamReader(File.OpenRead(@"C:\Users\Oscar\source\repos\Recursiva.Superliga\socios.csv"));
+            var reader = new StreamReader(File.OpenRead(RUTA));
             while (!reader.EndOfStream)
             {
                 var line = reader.ReadLine();
                 var values = line.Split(';');
-                Socio socio = new Socio(values[0], int.Parse(values[1]), values[2], values[3], values[4]);
+                Socio socio = new Socio(values[0],
+                                        int.Parse(values[1]),
+                                        values[2],
+                                        values[3],
+                                        values[4]);
 
                 lista.Add(socio);
             }
@@ -26,58 +31,61 @@ namespace Recursiva.Superliga.App
         public int Punto1()
         {
             List<Socio> lista = Leercsv();
-            return lista.Count();               
+            return lista.Count();
         }
 
 
-        public float Punto2()
+        public float Punto2(string club)
         {
             List<Socio> lista = Leercsv();
-            var sRacing = lista.Where(x => x.Equipo.Equals("Racing"));
+            var sRacing = lista.Where(x => x.Equipo.Equals(club));
             var promedio = sRacing.Average(x => x.Edad);
             return (float)promedio;
-           
-           
+
+
 
         }
-        public List<Socio> Punto3()
+        public IEnumerable<Socio> Punto3(string ec, string ne)
         {
             List<Socio> lista = Leercsv();
-            int pc = 0;
-            List<Socio> result = new List<Socio>();
-            foreach (var item in lista)
-            {
-                if(item.EstadoCivil.Equals("Casado") 
-                    && item.NivelEstudios.Equals("Universitario")){
-                    result.Add(item);
-                    pc++;
-                    if(pc==100) return result;
-                }
-            }
-
+            var result = lista.Where(x => x.EstadoCivil.Equals(ec)
+                    && x.NivelEstudios.Equals(ne)).Take(100);
             return result;
 
         }
 
 
-        public List<Socio> Punto4()
+        public IEnumerable<KeyValuePair<string, int>> Punto4(string club)
         {
             List<Socio> lista = Leercsv();
-            var nombres = lista.Where(x=> x.Equipo.Equals("River")).GroupBy(x => x.Nombre);
-            
-            foreach (var item in lista)
+            var sRiver = lista.Where(x => x.Equipo.Equals(club)).GroupBy(x => x.Nombre);
+            Dictionary<string, int> nombres = new();
+            foreach (var item in sRiver)
             {
-                if (item.Equipo.Equals("River"))
-                {
-               //   nombres.Add(item.Nombre);
-                }
+                nombres.Add(item.Key, item.Count());
             }
-
-            return lista;
+            var listafinal = nombres.OrderByDescending(x => x.Value).Take(5);
+            return listafinal;
 
         }
 
+        public IOrderedEnumerable<Estadistica> Punto5(){
 
+            List<Socio> lista = Leercsv();
+            var lista2 = lista.GroupBy(x => x.Equipo);
+            List<Estadistica>cSocios = new();
+            foreach (var item in lista2)
+            {
+                Estadistica e = new Estadistica(item.Count(), 
+                                item.Key, 
+                                (float)item.Average(x => x.Edad), 
+                                item.Min(x => x.Edad), 
+                                item.Max(x => x.Edad));
+                cSocios.Add(e);
+            }
+            var listFinal = cSocios.OrderByDescending(x => x.cSocios);
+            return listFinal;
+        }
 
     }
 }
